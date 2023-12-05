@@ -64,6 +64,7 @@ char **getCommand(char **argv)
 		size_t len = strlen(paths[i]) + 1 + strlen(argv[0]) + 1;
 		char *y = (char *)malloc(len);
 		if (y == NULL) {
+
 			perror("Error allocating memory for y");
 			exit(EXIT_FAILURE);
 		}
@@ -78,7 +79,6 @@ char **getCommand(char **argv)
 
 	free_array_tokens(paths);
 	free(argv[0]);
-
 	if ((access(x, F_OK) != 0))
 		argv[0] = NULL;
 	else
@@ -130,7 +130,7 @@ int main(int argc, char **argv)
 		if (!isatty(STDIN_FILENO))
 			break;
 	}
-
+	free_array_tokens(argv);
 	free(input);
 	return (0);
 }
