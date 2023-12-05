@@ -87,7 +87,7 @@ char **getCommand(char **argv)
 	return argv;
 }
 
-void execute(char *input)
+void execute(char *input, char **av)
 {
 		pid_t child_pid;
 		int status;
@@ -99,7 +99,7 @@ void execute(char *input)
 			argv = getCommand(argv);
 			if ((argv[0] == NULL) || execve(argv[0], argv, NULL) == -1)
 			{
-				perror("Faild to execute the command");
+				perror(av[0]);
 				exit(EXIT_FAILURE);
 			}
 		}
@@ -108,21 +108,27 @@ void execute(char *input)
 		free_array_tokens(argv);
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
 	char *input = NULL;
 	size_t lenght = 0;
 	ssize_t numberRead;
 
+	if (argc < 0)
+		return (0);
+
 	while (1) {
-		write(1, "$ :", 1);
+		if (isatty(STDIN_FILENO))
+			write(1, "#cisfun$ ", 9);
 		numberRead = getline(&input, &lenght, stdin);
 		if (numberRead == -1)
 		{
 			free(input);
 			exit(EXIT_FAILURE);
 		}
-		execute(input);
+		execute(input, argv);
+		if (!isatty(STDIN_FILENO))
+			break;
 	}
 
 	free(input);
