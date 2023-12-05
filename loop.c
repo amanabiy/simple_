@@ -86,13 +86,10 @@ char **getCommand(char **argv)
 
 void execute(char *input)
 {
-		// process the input
-		pid_t my_pid;
 		pid_t child_pid;
 		int status;
 		char **argv = tokenize(input, " \n\r\t");
 		child_pid = fork();
-	    my_pid = getpid();
 
 		if (child_pid == 0)
 		{
