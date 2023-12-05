@@ -102,7 +102,6 @@ void execute(char *input)
 				perror("Faild to execute the command");
 				exit(EXIT_FAILURE);
 			}
-			printf("command not found\n");
 		}
 
 		waitpid(child_pid,&status,0);
@@ -120,14 +119,12 @@ int main(void)
 		numberRead = getline(&input, &lenght, stdin);
 		if (numberRead == -1)
 		{
-			printf("the program is closed\n");
 			free(input);
-			return (-1);
+			exit(EXIT_FAILURE);
 		}
 		execute(input);
 	}
 
-	printf("The program is closing");
 	free(input);
 	return (0);
 }
